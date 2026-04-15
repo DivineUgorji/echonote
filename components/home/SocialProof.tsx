@@ -1,0 +1,341 @@
+// "use client";
+
+// import { motion, useInView } from "framer-motion";
+// import { useRef, useEffect, useState } from "react";
+// import { Clock, Users, Target, Zap, Star } from "lucide-react";
+
+// /* ── Shared easing ──────────────────────────────────────── */
+// const ease = [0.22, 1, 0.36, 1] as const;
+
+// /* ── Animated counter hook ──────────────────────────────── */
+// function useCounter(target: number, duration: number, inView: boolean) {
+//   const [count, setCount] = useState(0);
+
+//   useEffect(() => {
+//     if (!inView) return;
+//     let start = 0;
+//     const step = target / (duration / 16);
+//     const timer = setInterval(() => {
+//       start += step;
+//       if (start >= target) {
+//         setCount(target);
+//         clearInterval(timer);
+//       } else {
+//         setCount(Math.floor(start));
+//       }
+//     }, 16);
+//     return () => clearInterval(timer);
+//   }, [inView, target, duration]);
+
+//   return count;
+// }
+
+// /* ── Stat item ──────────────────────────────────────────── */
+// function StatItem({
+//   icon: Icon,
+//   value,
+//   suffix,
+//   label,
+//   prefix,
+//   delay,
+//   inView,
+// }: {
+//   icon: React.ElementType;
+//   value: number;
+//   suffix?: string;
+//   prefix?: string;
+//   label: string;
+//   delay: number;
+//   inView: boolean;
+// }) {
+//   const count = useCounter(value, 1200, inView);
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, y: 20 }}
+//       animate={inView ? { opacity: 1, y: 0 } : {}}
+//       transition={{ duration: 0.6, ease, delay }}
+//       className="flex flex-col items-center gap-3 group"
+//     >
+//       {/* Icon */}
+//       <div className="size-10 rounded-xl bg-teal-surface border border-teal-mist flex items-center justify-center text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white group-hover:border-teal">
+//         <Icon className="size-4" strokeWidth={1.8} />
+//       </div>
+
+//       {/* Value */}
+//       <div className="flex items-baseline gap-0.5">
+//         {prefix && (
+//           <span className="text-xl font-semibold text-foreground font-plusJakarta">
+//             {prefix}
+//           </span>
+//         )}
+//         <span className="text-3xl font-semibold tracking-[-0.03em] text-foreground font-plusJakarta">
+//           {count.toLocaleString()}
+//         </span>
+//         {suffix && (
+//           <span className="text-xl font-semibold text-teal font-plusJakarta">
+//             {suffix}
+//           </span>
+//         )}
+//       </div>
+
+//       {/* Label */}
+//       <span className="text-[13px] text-muted-foreground">{label}</span>
+//     </motion.div>
+//   );
+// }
+
+// /* ── Divider ────────────────────────────────────────────── */
+// function Divider({ delay, inView }: { delay: number; inView: boolean }) {
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, scaleY: 0 }}
+//       animate={inView ? { opacity: 1, scaleY: 1 } : {}}
+//       transition={{ duration: 0.4, ease, delay }}
+//       className="hidden md:block w-px h-10 bg-teal-mist"
+//     />
+//   );
+// }
+
+// /* ── Main component ──────────────────────────────────────── */
+// export default function SocialProof() {
+//   const ref = useRef<HTMLDivElement>(null);
+//   const inView = useInView(ref, { once: true, margin: "-80px" });
+
+//   const stats = [
+//     { icon: Clock, value: 50000, suffix: "+", label: "Hours transcribed" },
+//     { icon: Users, value: 12000, suffix: "+", label: "Active users" },
+//     { icon: Target, value: 99, suffix: "%", label: "Accuracy rate" },
+//     {
+//       icon: Zap,
+//       value: 2,
+//       prefix: "< ",
+//       suffix: " min",
+//       label: "Avg. processing time",
+//     },
+//     { icon: Star, value: 49, suffix: "★", label: "Average rating" },
+//   ];
+
+//   return (
+//     <section
+//       ref={ref}
+//       className="bg-transparent relative w-full py-6 overflow-hidden"
+//     >
+//       {/* ── Subtle top/bottom borders with teal glow ────── */}
+//       <motion.div
+//         initial={{ scaleX: 0 }}
+//         animate={inView ? { scaleX: 1 } : {}}
+//         transition={{ duration: 0.8, ease, delay: 0.1 }}
+//         className="absolute top-0 left-0 right-0 h-px bg-teal-mist origin-left"
+//       />
+//       <motion.div
+//         initial={{ scaleX: 0 }}
+//         animate={inView ? { scaleX: 1 } : {}}
+//         transition={{ duration: 0.8, ease, delay: 0.2 }}
+//         className="absolute bottom-0 left-0 right-0 h-px bg-teal-mist origin-right"
+//       />
+
+//       {/* ── Soft background tint ────────────────────────── */}
+//       <motion.div
+//         initial={{ opacity: 0 }}
+//         animate={inView ? { opacity: 1 } : {}}
+//         transition={{ duration: 0.6, delay: 0.1 }}
+//         className="absolute inset-0 bg-teal-surface/40"
+//       />
+
+//       {/* ── Stats row ───────────────────────────────────── */}
+//       <div className="relative max-w-5xl mx-auto px-8">
+//         <div className="flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-4">
+//           {stats.map((stat, i) => (
+//             <>
+//               <StatItem
+//                 key={stat.label}
+//                 icon={stat.icon}
+//                 value={stat.value}
+//                 suffix={stat.suffix}
+//                 prefix={stat.prefix}
+//                 label={stat.label}
+//                 delay={0.2 + i * 0.08}
+//                 inView={inView}
+//               />
+//               {i < stats.length - 1 && (
+//                 <Divider
+//                   key={`div-${i}`}
+//                   delay={0.3 + i * 0.08}
+//                   inView={inView}
+//                 />
+//               )}
+//             </>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+
+/*  Shared easing*/
+const ease = [0.22, 1, 0.36, 1] as const;
+
+/*  Animated counter hook  */
+function useCounter(
+  target: number,
+  duration: number,
+  inView: boolean,
+  decimals = 0,
+) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(
+          decimals > 0
+            ? parseFloat(start.toFixed(decimals))
+            : Math.floor(start),
+        );
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [inView, target, duration, decimals]);
+
+  return count;
+}
+
+/*  Stat item  */
+function StatItem({
+  value,
+  suffix,
+  prefix,
+  label,
+  delay,
+  inView,
+  decimals,
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  label: string;
+  delay: number;
+  inView: boolean;
+  decimals?: number;
+}) {
+  const count = useCounter(value, 1200, inView, decimals);
+
+  const displayValue =
+    decimals && decimals > 0 ? count.toFixed(decimals) : count.toLocaleString();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease, delay }}
+      className="flex flex-col items-center gap-2"
+    >
+      {/* Value */}
+      <div className="flex items-baseline gap-1">
+        {prefix && (
+          <span className="text-lg font-semibold text-foreground font-plusJakarta">
+            {prefix}
+          </span>
+        )}
+        <span className="text-3xl font-semibold tracking-[-0.03em] text-foreground font-plusJakarta">
+          {displayValue}
+        </span>
+        {suffix && (
+          <span className="text-lg font-semibold text-teal font-plusJakarta">
+            {suffix}
+          </span>
+        )}
+      </div>
+
+      {/* Label */}
+      <span className="text-[13px] text-muted-foreground">{label}</span>
+    </motion.div>
+  );
+}
+
+/*  Divider  */
+function Divider({ delay, inView }: { delay: number; inView: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scaleY: 0 }}
+      animate={inView ? { opacity: 1, scaleY: 1 } : {}}
+      transition={{ duration: 0.4, ease, delay }}
+      className="hidden sm:block w-px h-8 bg-teal-mist"
+    />
+  );
+}
+
+/*  Main component  */
+export default function SocialProof() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const stats = [
+    { value: 50000, suffix: "+", label: "Hours transcribed" },
+    { value: 12000, suffix: "+", label: "Active users" },
+    { value: 99.2, suffix: "%", label: "Accuracy rate", decimals: 1 },
+    { value: 2, prefix: "< ", suffix: " min", label: "Avg. processing time" },
+    { value: 4.9, suffix: "★", label: "Average rating", decimals: 1 },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      className="relative w-full py-8 overflow-hidden bg-teal-surface/60 border-y border-teal-mist"
+    >
+      {/*  Animated border lines  */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 0.9, ease, delay: 0.1 }}
+        className="absolute top-0 left-0 right-0 h-px bg-teal/20 origin-left"
+      />
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 0.9, ease, delay: 0.2 }}
+        className="absolute bottom-0 left-0 right-0 h-px bg-teal/20 origin-right"
+      />
+
+      {/*  Stats row  */}
+      <div className="relative max-w-5xl mx-auto px-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-4">
+          {stats.map((stat, i) => (
+            <>
+              <StatItem
+                key={i}
+                value={stat.value}
+                suffix={stat.suffix}
+                prefix={stat.prefix}
+                label={stat.label}
+                delay={0.2 + i * 0.08}
+                inView={inView}
+                decimals={stat.decimals}
+              />
+              {i < stats.length - 1 && (
+                <Divider
+                  key={`div-${i}`}
+                  delay={0.3 + i * 0.08}
+                  inView={inView}
+                />
+              )}
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
