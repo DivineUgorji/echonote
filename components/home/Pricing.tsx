@@ -26,7 +26,7 @@ export default function Pricing() {
             const isPopular = plan.tag === "Most popular";
             const isEnterprise = plan.tag === "Enterprise";
 
-            //Styles for the tages on the price cards
+            //Styles for the tags on the price cards
             const tagStyles = isPopular
               ? "bg-teal text-white"
               : isEnterprise

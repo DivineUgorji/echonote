@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-// import { steps } from "@/lib/content";
+
 import { HowItWorksSteps as steps } from "@/lib/content";
 
 /* ── Shared easing */

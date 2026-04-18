@@ -9,11 +9,7 @@ export default function Home() {
   return (
     <main className="mx-auto w-full min-h-screen bg-[radial-gradient(#0D9488_1px,transparent_1px)] [bg-size:16px_16px]">
       <Banner />
-      <div className="flex items-center justify-center">
-        <Dot className="text-teal" />
-        <Dot className="text-teal" />
-        <Dot className="text-teal" />
-      </div>
+
       <SocialProof />
       <Features />
       <HowItWorks />
