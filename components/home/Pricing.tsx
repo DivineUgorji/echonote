@@ -1,10 +1,11 @@
 import React from "react";
 import { pricingPlanMap } from "@/lib/content";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 export default function Pricing() {
   return (
-    <section className="relative px-6 py-9 md:py-18">
+    <section className="relative px-6 py-9 md:py-18" id="pricing">
       <div className="relative max-w-5xl mx-auto">
         <div className="max-w-xl">
           <span className="inline-flex items-center gap-2 text-[11px] font-medium text-teal bg-teal-50 border border-teal-100 px-3 py-1.5 rounded-full tracking-[0.06em] uppercase">
@@ -80,16 +81,18 @@ export default function Pricing() {
                 </div>
 
                 {/* CTA */}
-                <button
-                  className={`mt-8 w-full rounded-lg py-2.5 text-sm font-medium transition
+                <Link href={plan.paymentLink}>
+                  <button
+                    className={`mt-8 w-full rounded-lg py-2.5 text-sm font-medium transition
                   ${
                     isPopular
                       ? "bg-teal text-white hover:bg-teal/90"
                       : "border border-gray-300 hover:border-teal"
                   }`}
-                >
-                  {plan.cta}
-                </button>
+                  >
+                    {plan.cta}
+                  </button>
+                </Link>
               </li>
             );
           })}

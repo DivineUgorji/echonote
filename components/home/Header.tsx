@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <nav className="container mx-auto flex items-center justify-between px-8 py-4 ">
       <div>
-        <NavLink href="/">
+        <NavLink href="#">
           <div className="flex lg:flex-1 gap-2 justify-center items-center">
             <EchonoteDot />
             <p className="font-heading font-bold text-black text-lg tracking-wide">
@@ -30,7 +30,7 @@ export default function Header() {
         className="flex lg:justify-center
           gap-2 lg:gap-12 lg:items-center"
       >
-        <NavLink href="/#pricing">Pricing</NavLink>
+        <NavLink href="#pricing">Pricing</NavLink>
         <Show when="signed-in">
           <NavLink href="/#posts">Your posts</NavLink>
         </Show>
